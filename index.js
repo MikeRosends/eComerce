@@ -1,53 +1,79 @@
-// The "pro-container" div can stay in the HTML file
+// Async Request
+async function fetchProducts() {
+  const data = await fetch("http://127.0.0.1:3000/items");
+  const product = await data.json();
+  console.log(product);
+  console.log("Number of items: " + product.length);
 
-// Select the "pro-container" div
+  // Containers
+  const proContainer = $("<div>", {
+    class: "pro",
+  });
+  const proDiv = $(".pro-container");
+  const descDiv = $("<div>", {
+    class: "des",
+  });
+  const starDiv = $("<div>", {
+    class: "star",
+  });
 
-// Create each "pro(duct)" div dinamicly
+  // Elements
+  const img = $("<img>", {
+    src: "img/products/f1.jpg",
+    onclick: "window.location.href='sproduct.html'",
+  });
+  const starIcon = `<i class="fas fa-star"></i>`;
+  const starAnchor = `<a href="#"><i class="fa-solid fa-star favorite"></i></a>`;
+  const cartAnchor = `<a href="#"><i class="fa-solid fa-cart-shopping cart"></i></a>`;
 
-const proContainer = $(".pro-container");
 
-const productDiv = $("<div>", {
-  class: "pro",
-});
+  // Function that generates each card
+  const generateProductContainers = function (num) {
 
-const img = $("<img>", {
-  src: "img/products/f1.jpg",
-  onclick: "window.location.href='sproduct.html'",
-});
+    // Create a new div for each element
 
-const descDiv = $("<div>", {
-  class: "des",
-});
 
-const starDiv = $("<div>", {
-  class: "star",
-});
 
-const starIcon = $("<i>", { class: "fas fa-star" });
-const cartIcon = $("i", { class: "fa-solid fa-cart-shopping cart" });
+    // Appending stars to the starDiv
+    const addStars = function (num) {
+      descDiv.append(starDiv);
+      for (let i = 0; i < num; i++) {
+        starDiv.append(starIcon);
+      }
+    };
 
-// Append cartIcon to Anchor Tag
-cartIcon.addAtribute;
+    // Appending description to the description div (descDiv)
 
-// Appending stars to the starDiv
-starDiv.append(starIcon);
+    const addDesc = function (brand, name, price) {
+      descDiv.append(`<span>${brand}</span>`, `<h5>${name}</h5>`);
+      addStars(product[num].rating);
+      descDiv.append(`<h4>$${price}</h4>`);
+    };
+    addDesc(product[num].brand, product[num].name, product[num].price);
 
-// Appending description to the description div (descDiv)
-descDiv.append(
-  "<span>adidas</span>",
-  "<h5>Cartoon Astronaut Tshirts</h5>",
-  starDiv,
-  "<h4>$78</h4>"
-);
+    // Adding elements to the product div
+    const createProdCard = function (
+      mainContainer,
+      secContainer,
+      img,
+      descCont,
+      button1,
+      button2
+    ) {
+      mainContainer.append(secContainer);
+      secContainer.append(img, descCont, button1, button2);
+    };
 
-// Appending img to productDiv
-productDiv
-  .append(img)
-  .append(
-    descDiv,
-    `<a><i class="fa-solid fa-star favorite"></i></a>`,
-    `<a><i class="fa-solid fa-cart-shopping cart"></i></a>`
-  );
+    createProdCard(proDiv, proContainer, img, descDiv, starAnchor, cartAnchor);
 
-// Appending the productDiv to the proContainer
-proContainer.append(productDiv);
+  };
+
+  let num = 0
+
+  for(let i = 0; i < product.length - 1; i++) {
+    num = num + 1;
+    generateProductContainers(num);
+  }
+}
+
+fetchProducts();
