@@ -8,8 +8,9 @@ async function fetchProducts() {
     const data = await response.json();
     const productList = data.products;
     const bannerList = data.banners;
-    console.log(productList);
-    console.log(bannerList);
+    console.log(data);
+  /*   console.log(productList);
+    console.log(bannerList); */
     console.log("Number of items: " + productList.length);
 
     // Containers
